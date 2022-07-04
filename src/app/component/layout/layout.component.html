@@ -1,0 +1,22 @@
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side">
+    <p>Auto-resizing sidenav</p>
+    <p>Lorem, ipsum dolor sit amet consectetur.</p>
+    <button mat-raised-button>
+      Toggle extra text
+    </button>
+  </mat-drawer>
+
+  <div>
+    <mat-toolbar>
+      <button (click)="drawer.toggle()" mat-icon-button>
+        <mat-icon color="primary">menu</mat-icon>
+      </button>
+      <span class="spacer"></span>
+      <span>Pacific</span>
+      <span class="spacer"></span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-drawer-container>

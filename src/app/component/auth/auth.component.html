@@ -1,0 +1,143 @@
+<mat-toolbar>
+  <span class="spacer"></span>
+  <span>Pacific</span>
+  <img src="assets/anchor-logo.png" alt="Application Logo" />
+  <span class="spacer"></span>
+</mat-toolbar>
+<section>
+  <mat-card class="mat-elevation-z20">
+    <mat-card-content>
+      <ng-container
+        *ngIf="true === registerButton.checked; then register; else login"
+      >
+      </ng-container>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+      <mat-button-toggle-group>
+        <mat-button-toggle>
+          <mat-icon>login</mat-icon>
+          Login
+        </mat-button-toggle>
+        <mat-button-toggle checked #registerButton>
+          Register
+          <mat-icon>fingerprint</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-card-actions>
+    <mat-card-footer>
+      <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+
+  <svg viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+    <defs>
+      <path
+        id="gentle-wave"
+        d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+      />
+    </defs>
+    <g>
+      <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+      <use
+        xlink:href="#gentle-wave"
+        x="48"
+        y="3"
+        fill="rgba(255,255,255,0.5)"
+      />
+      <use
+        xlink:href="#gentle-wave"
+        x="48"
+        y="5"
+        fill="rgba(255,255,255,0.3)"
+      />
+      <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+    </g>
+  </svg>
+</section>
+
+<ng-template #login>
+  <form [formGroup]="loginForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        placeholder="user@example.com"
+        formControlName="email"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="loginForm.invalid">{{
+        loginForm.getError("email")
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input
+        type="password"
+        matInput
+        placeholder="sup3r_secret_p4ssword"
+        formControlName="masterPassword"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="loginForm.invalid">{{
+        loginForm.getError("masterPassword")
+      }}</mat-error>
+    </mat-form-field>
+
+    <button color="primary" mat-flat-button>Let me in!</button>
+  </form>
+</ng-template>
+
+<ng-template #register>
+  <form [formGroup]="registerForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        placeholder="user@example.com"
+        formControlName="email"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="registerForm.invalid">{{
+        registerForm.getError("email")
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Master Password</mat-label>
+      <input
+        type="password"
+        matInput
+        placeholder="sup3r_secret_p4ssword"
+        formControlName="masterPassword"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm Master Password</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="confirmMasterPassword"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="registerForm.invalid">{{
+        registerForm.getError("confirmMasterPassword")
+      }}</mat-error>
+    </mat-form-field>
+
+    <button color="primary" mat-flat-button>Sign me up</button>
+  </form>
+  <mat-list>
+    <div mat-subheader>Master Password must:</div>
+
+    <mat-list-item *ngFor="let check of masterPasswordChecks"
+      ><mat-icon mat-list-icon [color]="check.satisfied ? 'primary' : 'warn'">{{
+        check.satisfied ? "gpp_good" : "gpp_bad"
+      }}</mat-icon>
+      {{ check.constraint }}
+    </mat-list-item>
+  </mat-list>
+</ng-template>
