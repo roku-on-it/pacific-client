@@ -19,14 +19,14 @@
           <mat-icon>login</mat-icon>
           Login
         </mat-button-toggle>
-        <mat-button-toggle checked #registerButton>
+        <mat-button-toggle #registerButton>
           Register
           <mat-icon>fingerprint</mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </mat-card-actions>
     <mat-card-footer>
-      <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar color="accent" *ngIf="loading" mode="indeterminate"></mat-progress-bar>
     </mat-card-footer>
   </mat-card>
 
@@ -90,7 +90,7 @@
 </ng-template>
 
 <ng-template #register>
-  <form [formGroup]="registerForm">
+  <form [formGroup]="registerForm" (submit)="onRegisterSubmit()">
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input
@@ -128,7 +128,7 @@
       }}</mat-error>
     </mat-form-field>
 
-    <button color="primary" mat-flat-button>Sign me up</button>
+    <button color="primary" [disabled]="loading" mat-flat-button>Sign me up</button>
   </form>
   <mat-list>
     <div mat-subheader>Master Password must:</div>

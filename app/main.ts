@@ -2,6 +2,9 @@ import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
+import { bootstrapGrpcLayer } from './grpc-layer';
+
+bootstrapGrpcLayer();
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -12,10 +15,12 @@ function createWindow(): BrowserWindow {
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
+    x: size.width / 3,
     y: 0,
-    width: size.width,
+    minWidth: 790,
+    width: 790,
     height: size.height,
+    autoHideMenuBar: true,
     icon: `${__dirname}/dist/assets/icons/favicon.ico`,
     webPreferences: {
       nodeIntegration: true,

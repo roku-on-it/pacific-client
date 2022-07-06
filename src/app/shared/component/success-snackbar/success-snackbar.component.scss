@@ -1,0 +1,12 @@
+:host {
+  div {
+    display: flex;
+    align-items: center;
+
+    span {
+      mat-icon {
+        margin-right: .5em;
+      }
+    }
+  }
+}

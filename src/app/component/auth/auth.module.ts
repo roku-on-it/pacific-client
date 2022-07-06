@@ -15,9 +15,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
+import { ErrorSnackbarComponent } from '../../shared/component/error-snackbar/error-snackbar.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
-  declarations: [AuthComponent],
+  declarations: [AuthComponent, ErrorSnackbarComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -33,6 +35,7 @@ import { MatListModule } from '@angular/material/list';
     ReactiveFormsModule,
     MatTooltipModule,
     MatListModule,
+    MatExpansionModule,
   ],
 })
 export class AuthModule {}
