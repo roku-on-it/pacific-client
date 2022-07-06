@@ -17,7 +17,7 @@ export class UserService {
       ipcRenderer.on(
         'registerResponse',
         (event, response: UnaryCallResponse<RegisterResponse>) => {
-          if (null != response.error) {
+          if (null == response.body) {
             subscriber.error(response.error);
           } else {
             subscriber.next(response.body);
