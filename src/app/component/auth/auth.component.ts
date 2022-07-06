@@ -90,7 +90,7 @@ export class AuthComponent implements OnInit {
       .subscribe(() => {
         this.ngZone.run(() => {
           this.snackbarService.raiseSuccess(
-            'Welcome to the depths of the pacific'
+            'Welcome to the depths of the Pacific!'
           );
           this.loading = false;
         });
