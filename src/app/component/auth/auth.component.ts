@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { LoginInput } from './form-input/login-input';
 import { validateForm } from '../../helper/form/validate-form';
 import { MasterPasswordCheck } from './interface/master-password-check';
+import { UserService } from '../../service/user.service';
+import { catchError, EMPTY } from 'rxjs';
+import { SnackbarService } from '../../service/snackbar.service';
 
 @UntilDestroy()
 @Component({
@@ -12,6 +15,8 @@ import { MasterPasswordCheck } from './interface/master-password-check';
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnInit {
+  loading = false;
+
   loginForm = new FormGroup(
     {
       email: new FormControl(),
@@ -37,7 +42,11 @@ export class AuthComponent implements OnInit {
     { constraint: 'include at least one number', satisfied: false },
   ];
 
-  constructor() {}
+  constructor(
+    private userService: UserService,
+    private snackbarService: SnackbarService,
+    private ngZone: NgZone
+  ) {}
 
   ngOnInit(): void {
     this.registerForm
@@ -50,6 +59,41 @@ export class AuthComponent implements OnInit {
         this.masterPasswordChecks[2].satisfied = /(.*[A-Z].*)/.test(value);
         this.masterPasswordChecks[3].satisfied = /(.*\W.*)/.test(value);
         this.masterPasswordChecks[4].satisfied = /\d/.test(value);
+      });
+  }
+
+  onRegisterSubmit() {
+    this.loading = true;
+
+    const { masterPasswordConfirm, ...rest } = this.registerForm.value;
+
+    this.userService
+      .register(rest)
+      .pipe(
+        catchError((err) => {
+          // Running snackbar spawn and loading toggle inside the ngZone
+          // since the user service is outside Angular because it is
+          // communicating with IPC which is outside the Angular zone.
+
+          this.ngZone.run(() => {
+            if (6 === err.code) {
+              err.details = 'User with this email already exists';
+            }
+
+            this.snackbarService.raiseError(err);
+            this.loading = false;
+          });
+
+          return EMPTY;
+        })
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => {
+          this.snackbarService.raiseSuccess(
+            'Welcome to the depths of the pacific'
+          );
+          this.loading = false;
+        });
       });
   }
 }

@@ -1,0 +1,27 @@
+<div>
+  <span><mat-icon color="warn">warning</mat-icon></span>
+  <div>Code: {{ data.code }}</div>
+  <span class="spacer"></span>
+  <div>{{ data.details }}</div>
+  <button (click)="closeSnackBar()" color="warn" mat-icon-button>
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<ng-container *ngIf="null !== details">
+  <mat-divider></mat-divider>
+  <br />
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Details</mat-panel-title>
+    </mat-expansion-panel-header>
+    <br />
+    <mat-list>
+      <ng-container *ngFor="let detail of details">
+        <mat-list-item>
+          {{ detail }}
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </mat-list>
+  </mat-expansion-panel>
+</ng-container>

@@ -1,0 +1,9 @@
+<div>
+  <span><mat-icon color="warn">warning</mat-icon></span>
+  <div>Code: {{ data.code }} </div>
+  <span class="spacer"></span>
+  <div>{{ data.details }}</div>
+  <button (click)="closeSnackBar()" color="warn" mat-icon-button>
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>

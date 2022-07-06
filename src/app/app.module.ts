@@ -11,13 +11,18 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { SnackbarService } from './service/snackbar.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SuccessSnackbarComponent } from './shared/component/success-snackbar/success-snackbar.component';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SuccessSnackbarComponent],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
@@ -31,8 +36,11 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
         deps: [HttpClient],
       },
     }),
+    MatIconModule,
+    MatButtonModule,
+    MatSnackBarModule,
   ],
-  providers: [],
+  providers: [SnackbarService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
