@@ -19,10 +19,10 @@ export class SnackbarService {
     });
   }
 
-  raiseSuccess(message) {
+  raiseSuccess(message: string) {
     this.snackbar.openFromComponent(SuccessSnackbarComponent, {
       data: message,
-      panelClass: 'snack-style',
+      duration: 4000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
     });
