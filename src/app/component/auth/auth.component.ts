@@ -7,6 +7,7 @@ import { MasterPasswordCheck } from './interface/master-password-check';
 import { UserService } from '../../service/user.service';
 import { catchError, EMPTY } from 'rxjs';
 import { SnackbarService } from '../../service/snackbar.service';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -45,7 +46,8 @@ export class AuthComponent implements OnInit {
   constructor(
     private userService: UserService,
     private snackbarService: SnackbarService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class AuthComponent implements OnInit {
       });
   }
 
-  onRegisterSubmit() {
+  onRegisterSubmit(): void {
     this.loading = true;
 
     const { masterPasswordConfirm, ...rest } = this.registerForm.value;
@@ -85,7 +87,8 @@ export class AuthComponent implements OnInit {
           });
 
           return EMPTY;
-        })
+        }),
+        untilDestroyed(this)
       )
       .subscribe(() => {
         this.ngZone.run(() => {
@@ -93,6 +96,35 @@ export class AuthComponent implements OnInit {
             'Welcome to the depths of the Pacific!'
           );
           this.loading = false;
+        });
+      });
+  }
+
+  onLoginSubmit(): void {
+    this.loading = true;
+
+    this.userService
+      .login(this.loginForm.value)
+      .pipe(
+        catchError((err) => {
+          this.ngZone.run(() => {
+            if (16 === err.code) {
+              err.details = 'Invalid email or password';
+            }
+
+            this.snackbarService.raiseError(err);
+            this.loading = false;
+          });
+
+          return EMPTY;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe((response) => {
+        this.ngZone.run(() => {
+          this.loading = false;
+          localStorage.setItem('token', response.token);
+          this.router.navigateByUrl('/');
         });
       });
   }
