@@ -57,7 +57,7 @@
 </section>
 
 <ng-template #login>
-  <form [formGroup]="loginForm">
+  <form [formGroup]="loginForm" (submit)="onLoginSubmit()">
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input

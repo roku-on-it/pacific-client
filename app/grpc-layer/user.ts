@@ -1,8 +1,10 @@
 import { loadSync } from '@grpc/proto-loader';
 import * as grpc from '@grpc/grpc-js';
-import { Metadata } from '@grpc/grpc-js';
 import { ipcMain } from 'electron';
 import { LoginInput } from '../../src/app/component/auth/form-input/login-input';
+import { handleUnaryCall } from './helper/handle-unary-call';
+import axios from 'axios';
+import { Metadata } from '@grpc/grpc-js';
 
 // @ts-ignore
 const { UserService } = grpc.loadPackageDefinition(
@@ -21,37 +23,31 @@ export function initUserService() {
 
 function handleRegister() {
   ipcMain.on('register', (event, payload: LoginInput) => {
-    const responseObject: any = { error: {} };
-    const unaryRequest = client.register(payload, (err, response) => {
-      responseObject.body = response;
-
-      if (err) {
-        const { metadata, ...restErr } = err;
-        responseObject.error = { ...responseObject.error, ...restErr };
-      }
-
-      event.sender.send('registerResponse', responseObject);
-    });
-
-    unaryRequest.on('metadata', (metadata: Metadata) => {
-      responseObject.error.metadata = metadata.getMap();
-    });
+    handleUnaryCall(client, event, payload, 'register');
   });
 }
 
 function handleLogin() {
-  ipcMain.on('login', (event, payload: LoginInput) => {
-    client.login(payload, (err, response) => {
-      event.returnValue = {
-        ...(err && {
-          error: {
-            code: err.code,
-            details: err.details,
-            metadata: err.metadata,
-          },
-        }),
-        response,
-      };
-    });
+  ipcMain.on('login', async (event, payload: LoginInput) => {
+    const response = await axios.get('http://checkip.amazonaws.com');
+    const ip = response.data.trimEnd();
+    const metadata = new Metadata();
+    metadata.add('ip', ip);
+
+    switch (process.platform) {
+      case 'win32':
+        metadata.add('os', 'WINDOWS');
+        break;
+
+      case 'darwin':
+        metadata.add('os', 'MACOS');
+        break;
+
+      default:
+        metadata.add('os', 'LINUX');
+        break;
+    }
+
+    handleUnaryCall(client, event, payload, 'login', metadata);
   });
 }
