@@ -1,0 +1,59 @@
+:host {
+  main {
+    margin: 2em;
+
+    section {
+      display: flex;
+      align-items: flex-start;
+
+      button {
+        margin-left: 1em;
+        height: 3.8em;
+      }
+
+      mat-form-field {
+        max-width: 20em;
+      }
+    }
+
+    .tab-icon {
+      margin-right: 1em;
+    }
+
+    table {
+      width: 100%;
+
+      td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 10em;
+
+        button {
+          mat-icon {
+            display: flex;
+            margin: auto;
+          }
+        }
+
+        span {
+          color: #999;
+        }
+      }
+    }
+
+    mat-form-field {
+      font-size: 14px;
+      width: 100%;
+    }
+
+    mat-card {
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    }
+  }
+}

@@ -6,6 +6,13 @@
     mat-drawer {
       min-width: 300px;
       user-select: none;
+
+      mat-nav-list {
+        mat-icon {
+          padding-left: .4em;
+          padding-right: .4em;
+        }
+      }
     }
 
     mat-toolbar {

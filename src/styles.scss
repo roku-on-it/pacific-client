@@ -51,3 +51,7 @@ body {
 .mat-success {
   color: mat-color($pacific-client-success);
 }
+
+.list-item-active {
+  color: mat-color($pacific-client-primary) !important;
+}

@@ -17,8 +17,9 @@ function createWindow(): BrowserWindow {
   win = new BrowserWindow({
     x: size.width / 3,
     y: 0,
-    minWidth: 790,
-    width: 790,
+    minHeight: 920,
+    minWidth: 990,
+    width: 990,
     height: size.height,
     autoHideMenuBar: true,
     icon: `${__dirname}/dist/assets/icons/favicon.ico`,

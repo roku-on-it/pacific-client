@@ -1,16 +1,26 @@
 <mat-drawer-container autosize>
-  <mat-drawer #drawer mode="side">
-    <p>Auto-resizing sidenav</p>
-    <p>Lorem, ipsum dolor sit amet consectetur.</p>
-    <button mat-raised-button>
-      Toggle extra text
-    </button>
+  <mat-drawer #drawer mode="over">
+    <mat-nav-list>
+      <a
+        #routerLinkActiveInstance="routerLinkActive"
+        *ngFor="let navLink of navLinks"
+        [attr.tabindex]="routerLinkActiveInstance.isActive ? 0 : -1"
+        [class.list-item-active]="routerLinkActiveInstance.isActive"
+        [routerLink]="navLink.path"
+        (click)="drawer.close()"
+        mat-list-item
+        routerLinkActive
+      >
+        <mat-icon mat-list-icon>{{ navLink.icon }}</mat-icon>
+        <span>{{ navLink.label }}</span>
+      </a>
+    </mat-nav-list>
   </mat-drawer>
 
   <div>
     <mat-toolbar>
       <button (click)="drawer.toggle()" mat-icon-button>
-        <mat-icon color="primary">menu</mat-icon>
+        <mat-icon color="primary">lunch_dining</mat-icon>
       </button>
       <span class="spacer"></span>
       <span routerLink="/auth" >Pacific</span>
